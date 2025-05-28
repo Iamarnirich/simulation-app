@@ -28,24 +28,31 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden">
+    <div className="relative min-h-[calc(100vh-100px)]">
       {/* Image de fond */}
-      <div className="fixed inset-0 z-0">
+      <div className="absolute left-0 right-0 top-[63px] bottom-0 -z-10">
         <Image
           src="/HISTOIRE-UNIQUE-HEADER.png"
           alt="Fond Veternity"
           fill
-          className="object-cover object-center"
+          className="object-cover object-top"
           priority
         />
+        <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
       </div>
 
-      {/* Overlay noir fixe */}
-      <div className="fixed top-[63px] left-0 right-0 bottom-0 bg-black/60 z-10 backdrop-blur-sm" />
-
       {/* Formulaire d'authentification */}
-      <div className="relative z-20 flex items-center justify-center h-full px-4">
-        <div className="w-full max-w-md bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl p-8 space-y-6">
+      <div className="flex items-center justify-center min-h-[calc(100vh-103px)] px-4">
+        <div className="w-full max-w-md bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl p-8 space-y-6 mt-10">
+          <div className="flex justify-center mb-4">
+            <Image
+              src="/logo_connexion.png"
+              alt="Veternity Logo"
+              width={60}
+              height={60}
+            />
+          </div>
+
           <h2 className="text-3xl font-bold text-center text-[#000000]">
             {isLogin ? "Connexion" : "Inscription"}
           </h2>

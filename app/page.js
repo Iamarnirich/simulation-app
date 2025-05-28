@@ -1,17 +1,16 @@
-
 import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="relative w-screen h-screen overflow-hidden">
-      {/* Image fixe et centrée */}
-      <div className="fixed inset-0 z-0 bg-[url('/HISTOIRE-UNIQUE-HEADER.png')] bg-cover bg-center bg-no-repeat" />
+    <div className="relative w-full h-full min-h-full pt-[63px]">
+      {/* Image de fond */}
+      <div className="absolute inset-0 top-[63px] z-0 bg-[url('/HISTOIRE-UNIQUE-HEADER.png')] bg-cover bg-center bg-no-repeat" />
 
-      {/* Voile sombre fixe */}
-      <div className="fixed top-[63px] left-0 right-0 bottom-0 bg-black/50 z-10" />
+      {/* Voile sombre */}
+      <div className="absolute inset-0 top-[63px] z-10 bg-black/50" />
 
       {/* Contenu centré */}
-      <div className="relative z-20 flex flex-col justify-center items-center h-screen text-white text-center">
+      <div className="relative z-20 flex flex-col justify-center items-center text-white text-center min-h-[calc(100vh-80px)] px-4 py-20">
         <h1 className="text-4xl md:text-5xl font-bold mb-4 drop-shadow-lg">
           Bienvenue sur Simulator !
         </h1>

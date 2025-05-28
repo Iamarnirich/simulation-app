@@ -1,5 +1,6 @@
 import "./globals.css";
 import NavBar from "@/components/NavBar";
+import FooterPage from "@/components/FooterPage";
 
 export const metadata = {
   title: "Veternity Simulation",
@@ -9,11 +10,15 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="fr">
-      <body className="bg-gray-50 min-h-screen font-sans text-gray-800">
-        <NavBar />
-        <main className="pt-24 max-w-7xl mx-auto p-6">{children}</main>
+      <body className="flex flex-col min-h-screen">
+        <header>
+          <NavBar />
+        </header>
+        <main className="flex-1 relative">{children}</main>
+        <footer>
+          <FooterPage />
+        </footer>
       </body>
     </html>
   );
 }
-

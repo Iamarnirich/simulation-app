@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect } from "react";
@@ -112,7 +111,7 @@ export default function Page() {
   };
 
   return (
-    <main className="min-h-screen bg-white font-sans p-8 ">
+    <main className="relative min-h-[calc(100vh-103px)] mt-[63px] mb-[40px] bg-white/80 p-8">
       <div className="max-w-4xl mx-auto shadow-lg p-6 rounded-md border border-gray-200">
         <h1 className="text-2xl font-bold text-center text-[#C6A664] mb-6">
           Simulation Chiffre d'affaires / Marge
@@ -169,71 +168,75 @@ export default function Page() {
 
         {tableData.length > 0 && (
           <>
-            <table className="w-full border text-sm mb-4">
-              <thead className="bg-gray-100">
-                <tr>
-                  <th className="border px-3 py-2">Clinique</th>
-                  <th className="border px-3 py-2">Service</th>
-                  <th className="border px-3 py-2">Volume</th>
-                  <th className="border px-3 py-2">Volume prev</th>
-                  <th className="border px-3 py-2">Taux de marge</th>
-                  <th className="border px-3 py-2">CA prev (€)</th>
-                  <th className="border px-3 py-2">Marge prev (€)</th>
-                </tr>
-              </thead>
-              <tbody>
-                {tableData.map((row, index) => {
-                  const cliniqueData = cliniques.find((c) => c.id === clinique);
-                  return (
-                    <tr key={index}>
-                      <td className="border px-3 py-2">{clinique}</td>
-                      <td className="border px-3 py-2">{row.service}</td>
-                      <td className="border px-3 py-2 text-right">
-                        {row.volume_hist}
-                      </td>
-                      <td className="border px-3 py-2 text-right">
-                        <input
-                          type="number"
-                          value={row.volume_prev}
-                          onChange={(e) =>
-                            handleVolumeChange(index, e.target.value)
-                          }
-                          className="w-20 border rounded px-2 py-1 text-right"
-                        />
-                      </td>
-                      <td className="border px-3 py-2 text-right">
-                        {cliniqueData?.tx_marge
-                          ? `${(cliniqueData.tx_marge * 100).toFixed(1)} %`
-                          : "0"}
-                      </td>
-                      <td className="border px-3 py-2 text-right">
-                        {row.ca_prev !== null
-                          ? Number(row.ca_prev).toLocaleString("fr-FR", {
-                              minimumFractionDigits: 0,
-                              maximumFractionDigits: 0,
-                            })
-                          : "0"}
-                      </td>
-                      <td className="border px-3 py-2 text-right">
-                        {row.marge_prev !== null
-                          ? Number(row.marge_prev).toLocaleString("fr-FR", {
-                              minimumFractionDigits: 0,
-                              maximumFractionDigits: 0,
-                            })
-                          : "0"}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+            <div className="overflow-x-auto">
+              <table className="w-full border text-sm mb-4">
+                <thead className="bg-gray-100">
+                  <tr>
+                    <th className="border px-3 py-2">Clinique</th>
+                    <th className="border px-3 py-2">Service</th>
+                    <th className="border px-3 py-2">Volume</th>
+                    <th className="border px-3 py-2">Volume prev</th>
+                    <th className="border px-3 py-2">Taux de marge</th>
+                    <th className="border px-3 py-2">CA prev (€)</th>
+                    <th className="border px-3 py-2">Marge prev (€)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {tableData.map((row, index) => {
+                    const cliniqueData = cliniques.find(
+                      (c) => c.id === clinique
+                    );
+                    return (
+                      <tr key={index}>
+                        <td className="border px-3 py-2">{clinique}</td>
+                        <td className="border px-3 py-2">{row.service}</td>
+                        <td className="border px-3 py-2 text-right">
+                          {row.volume_hist}
+                        </td>
+                        <td className="border px-3 py-2 text-right">
+                          <input
+                            type="number"
+                            value={row.volume_prev}
+                            onChange={(e) =>
+                              handleVolumeChange(index, e.target.value)
+                            }
+                            className="w-20 border rounded px-2 py-1 text-right"
+                          />
+                        </td>
+                        <td className="border px-3 py-2 text-right">
+                          {cliniqueData?.tx_marge
+                            ? `${(cliniqueData.tx_marge * 100).toFixed(1)} %`
+                            : "0"}
+                        </td>
+                        <td className="border px-3 py-2 text-right">
+                          {row.ca_prev !== null
+                            ? Number(row.ca_prev).toLocaleString("fr-FR", {
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 0,
+                              })
+                            : "0"}
+                        </td>
+                        <td className="border px-3 py-2 text-right">
+                          {row.marge_prev !== null
+                            ? Number(row.marge_prev).toLocaleString("fr-FR", {
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 0,
+                              })
+                            : "0"}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
 
-            <button
-              onClick={handleSave}
-              className="w-60 bg-[#C6A664] text-white font-semibold py-2 px-4 rounded-full hover:bg-[#C6A664]-700 mx-auto block"
-            >
-              Enregistrer les simulations
-            </button>
+              <button
+                onClick={handleSave}
+                className="w-60 bg-[#C6A664] text-white font-semibold py-2 px-4 rounded-full hover:bg-[#b3974e]-700 mx-auto block"
+              >
+                Enregistrer les simulations
+              </button>
+            </div>
           </>
         )}
       </div>

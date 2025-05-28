@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -48,7 +47,7 @@ export default function HistoriquePage() {
   };
 
   return (
-    <main className="min-h-screen bg-white p-8">
+    <main className="relative min-h-[calc(100vh-103px)] mt-[63px] mb-[40px] bg-white/80 p-8">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-2xl font-bold text-[#C6A664] mb-6">
           Historique des simulations enregistrées

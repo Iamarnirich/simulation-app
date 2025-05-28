@@ -1,8 +1,7 @@
-// app/a-propos/page.js
 export default function AProposPage() {
   return (
-    <main className="min-h-screen bg-white p-8">
-      <div className="max-w-3xl mx-auto text-gray-800">
+    <main className="relative min-h-[calc(100vh-103px)] mt-[63px] mb-[40px] bg-white/80 p-8">
+      <div className="max-w-3xl mx-auto text-gray-800 relative z-10">
         <h1 className="text-3xl font-bold text-[#C6A664] mb-6">
           À propos de l'application
         </h1>
