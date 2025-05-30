@@ -15,7 +15,7 @@ export default function Home() {
           Bienvenue sur Simulator !
         </h1>
         <p className="text-lg md:text-xl mb-6 max-w-xl drop-shadow">
-          L'outil pour simuler votre chiffre d'affaires et vos marges.
+          L&apos;outil pour simuler votre chiffre d&apos;affaires et vos marges.
         </p>
         <Link
           href="/connexion"

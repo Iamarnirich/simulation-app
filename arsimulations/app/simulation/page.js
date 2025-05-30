@@ -125,7 +125,7 @@ export default function Page() {
     <main className="relative min-h-[calc(100vh-103px)] mt-[63px] mb-[40px] bg-white/80 p-4 sm:p-6 md:p-8">
       <div className="max-w-4xl mx-auto shadow-lg p-4 sm:p-6 rounded-md border border-gray-200">
         <h1 className="text-2xl font-bold text-center text-[#C6A664] mb-6">
-          Simulation Chiffre d'affaires / Marge
+          Simulation Chiffre d&apos;affaires / Marge
         </h1>
 
         <div className="grid grid-cols-1 gap-4 mb-6 place-items-center">
