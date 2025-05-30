@@ -68,37 +68,44 @@ export default function HistoriquePage() {
         </div>
 
         <div className="overflow-auto border rounded-md">
-          <table className="min-w-full text-sm text-left">
-            <thead className="bg-gray-100">
+          <table className="min-w-full border-collapse bg-white shadow-lg rounded-lg overflow-hidden">
+            <thead className="bg-[#EDE8D0] text-[#C6A664]">
               <tr>
-                <th className="border px-4 py-2">Date</th>
-                <th className="border px-4 py-2">Clinique</th>
-                <th className="border px-4 py-2">Service</th>
-                <th className="border px-4 py-2">Période</th>
-                <th className="border px-4 py-2">Volume</th>
-                <th className="border px-4 py-2">CA (€)</th>
-                <th className="border px-4 py-2">Marge (€)</th>
+                <th className="px-4 py-3 text-left">Date</th>
+                <th className="px-4 py-3 text-left">Clinique</th>
+                <th className="px-4 py-3 text-left">Service</th>
+                <th className="px-4 py-3 text-right">Période</th>
+                <th className="px-4 py-3 text-right">Volume</th>
+                <th className="px-4 py-3 text-right">CA (€)</th>
+                <th className="px-4 py-3 text-right">Marge (€)</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="text-sm text-gray-800">
               {simulations.map((sim) => (
-                <tr key={sim.id}>
-                  <td className="border px-4 py-2">
+                <tr key={sim.id} className="border-t border-gray-200">
+                  <td className="px-4 py-2 text-left whitespace-nowrap">
                     {new Date(sim.created_at).toLocaleDateString()}
                   </td>
-                  <td className="border px-4 py-2">{sim.clinique}</td>
-                  <td className="border px-4 py-2">{sim.service}</td>
-                  <td className="border px-4 py-2">{sim.periode}</td>
-                  <td className="border px-4 py-2 text-right">
-                    {sim.volume_prev}
+                  <td className="px-4 py-2 whitespace-nowrap">
+                    {sim.clinique}
                   </td>
-                  <td className="border px-4 py-2 text-right">
+                  <td className="px-4 py-2 whitespace-nowrap">{sim.service}</td>
+                  <td className="px-4 py-2 text-right whitespace-nowrap">
+                    {sim.periode}
+                  </td>
+                  <td className="px-4 py-2 text-right whitespace-nowrap">
+                    {sim.volume_prev?.toLocaleString("fr-FR", {
+                      minimumFractionDigits: 0,
+                      maximumFractionDigits: 0,
+                    })}
+                  </td>
+                  <td className="px-4 py-2 text-right whitespace-nowrap">
                     {sim.ca_prev?.toLocaleString("fr-FR", {
                       minimumFractionDigits: 0,
                       maximumFractionDigits: 0,
                     })}
                   </td>
-                  <td className="border px-4 py-2 text-right">
+                  <td className="px-4 py-2 text-right whitespace-nowrap">
                     {sim.marge_prev?.toLocaleString("fr-FR", {
                       minimumFractionDigits: 0,
                       maximumFractionDigits: 0,

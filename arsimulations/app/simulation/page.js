@@ -43,7 +43,7 @@ export default function Page() {
 
     const { data, error } = await supabase
       .from("ventes_historiques")
-      .select("service,volume_hist")
+      .select("service,volume_hist,ca_hist")
       .eq("clinique", clinique)
       .eq("periode", annee);
 
@@ -51,16 +51,27 @@ export default function Page() {
       setError("Aucune donnée trouvée pour cette clinique et période.");
       return;
     }
+
     console.log("Requête Supabase:", data);
 
-    const lignes = data.map(({ service, volume_hist }) => ({
-      service,
-      volume_hist: volume_hist ?? 0,
-      volume_prev: "",
-      ca_prev: null,
-      marge_prev: null,
-    }));
-    setTableData(lignes);
+    // Regroupement des services
+    const grouped = {};
+    for (const { service, volume_hist, ca_hist } of data) {
+      if (!grouped[service]) {
+        grouped[service] = {
+          service,
+          volume_hist: 0,
+          ca_hist: 0,
+          volume_prev: "",
+          ca_prev: null,
+          marge_prev: null,
+        };
+      }
+      grouped[service].volume_hist += volume_hist ?? 0;
+      grouped[service].ca_hist += ca_hist ?? 0;
+    }
+
+    setTableData(Object.values(grouped));
   };
 
   const handleVolumeChange = async (index, value) => {
@@ -111,8 +122,8 @@ export default function Page() {
   };
 
   return (
-    <main className="relative min-h-[calc(100vh-103px)] mt-[63px] mb-[40px] bg-white/80 p-8">
-      <div className="max-w-4xl mx-auto shadow-lg p-6 rounded-md border border-gray-200">
+    <main className="relative min-h-[calc(100vh-103px)] mt-[63px] mb-[40px] bg-white/80 p-4 sm:p-6 md:p-8">
+      <div className="max-w-4xl mx-auto shadow-lg p-4 sm:p-6 rounded-md border border-gray-200">
         <h1 className="text-2xl font-bold text-center text-[#C6A664] mb-6">
           Simulation Chiffre d'affaires / Marge
         </h1>
@@ -123,7 +134,7 @@ export default function Page() {
             <select
               value={clinique}
               onChange={(e) => setClinique(e.target.value)}
-              className="w-100 border rounded-full px-3 py-2"
+              className="w-64 border rounded-full px-3 py-2"
             >
               {cliniques.map((c) => (
                 <option key={c.id} value={c.id}>
@@ -139,7 +150,7 @@ export default function Page() {
               type="date"
               value={dateDebut}
               onChange={(e) => setDateDebut(e.target.value)}
-              className="w-100 border rounded-full px-3 py-2"
+              className="w-64 border rounded-full px-3 py-2"
             />
           </div>
 
@@ -149,14 +160,14 @@ export default function Page() {
               type="date"
               value={dateFin}
               onChange={(e) => setDateFin(e.target.value)}
-              className="w-100 border rounded-full px-3 py-2"
+              className="w-64 border rounded-full px-3 py-2"
             />
           </div>
         </div>
 
         <button
           onClick={handleRecherche}
-          className="flex justify-center w-50 bg-[#C6A664] text-white font-semibold py-2 px-4 rounded-full hover:bg-[#b3974e] mb-6 mx-auto block"
+          className="flex justify-center w-60 bg-[#C6A664] text-white font-semibold py-2 px-4 rounded-full hover:bg-[#b3974e] mb-6 mx-auto"
         >
           Historique CA
         </button>
@@ -169,46 +180,53 @@ export default function Page() {
         {tableData.length > 0 && (
           <>
             <div className="overflow-x-auto">
-              <table className="w-full border text-sm mb-4">
-                <thead className="bg-gray-100">
+              <table className="min-w-full border-collapse bg-white shadow-lg rounded-lg overflow-hidden">
+                <thead className="bg-[#C6A664] text-white">
                   <tr>
-                    <th className="border px-3 py-2">Clinique</th>
-                    <th className="border px-3 py-2">Service</th>
-                    <th className="border px-3 py-2">Volume</th>
-                    <th className="border px-3 py-2">Volume prev</th>
-                    <th className="border px-3 py-2">Taux de marge</th>
-                    <th className="border px-3 py-2">CA prev (€)</th>
-                    <th className="border px-3 py-2">Marge prev (€)</th>
+                    <th className="px-4 py-3 text-left">Service</th>
+                    <th className="px-4 py-3 text-right">Volume</th>
+                    <th className="px-4 py-3 text-right">CA (€)</th>
+                    <th className="px-4 py-3 text-right">Volume prev</th>
+                    <th className="px-4 py-3 text-right">Taux de marge</th>
+                    <th className="px-4 py-3 text-right">CA prev (€)</th>
+                    <th className="px-4 py-3 text-right">Marge prev (€)</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className="text-sm text-gray-800">
                   {tableData.map((row, index) => {
                     const cliniqueData = cliniques.find(
                       (c) => c.id === clinique
                     );
                     return (
-                      <tr key={index}>
-                        <td className="border px-3 py-2">{clinique}</td>
-                        <td className="border px-3 py-2">{row.service}</td>
-                        <td className="border px-3 py-2 text-right">
+                      <tr key={index} className="border-t border-gray-200">
+                        <td className="px-4 py-2 whitespace-nowrap">
+                          {row.service}
+                        </td>
+                        <td className="px-4 py-2 text-right whitespace-nowrap">
                           {row.volume_hist}
                         </td>
-                        <td className="border px-3 py-2 text-right">
+                        <td className="px-4 py-2 text-right whitespace-nowrap">
+                          {Number(row.ca_hist).toLocaleString("fr-FR", {
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0,
+                          })}
+                        </td>
+                        <td className="px-4 py-2 text-right whitespace-nowrap">
                           <input
                             type="number"
                             value={row.volume_prev}
                             onChange={(e) =>
                               handleVolumeChange(index, e.target.value)
                             }
-                            className="w-20 border rounded px-2 py-1 text-right"
+                            className="w-24 border rounded px-2 py-1 text-right"
                           />
                         </td>
-                        <td className="border px-3 py-2 text-right">
+                        <td className="px-4 py-2 text-right whitespace-nowrap">
                           {cliniqueData?.tx_marge
                             ? `${(cliniqueData.tx_marge * 100).toFixed(1)} %`
                             : "0"}
                         </td>
-                        <td className="border px-3 py-2 text-right">
+                        <td className="px-4 py-2 text-right whitespace-nowrap">
                           {row.ca_prev !== null
                             ? Number(row.ca_prev).toLocaleString("fr-FR", {
                                 minimumFractionDigits: 0,
@@ -216,7 +234,7 @@ export default function Page() {
                               })
                             : "0"}
                         </td>
-                        <td className="border px-3 py-2 text-right">
+                        <td className="px-4 py-2 text-right whitespace-nowrap">
                           {row.marge_prev !== null
                             ? Number(row.marge_prev).toLocaleString("fr-FR", {
                                 minimumFractionDigits: 0,
@@ -229,14 +247,14 @@ export default function Page() {
                   })}
                 </tbody>
               </table>
-
-              <button
-                onClick={handleSave}
-                className="w-60 bg-[#C6A664] text-white font-semibold py-2 px-4 rounded-full hover:bg-[#b3974e]-700 mx-auto block"
-              >
-                Enregistrer les simulations
-              </button>
             </div>
+
+            <button
+              onClick={handleSave}
+              className="w-60 bg-[#C6A664] text-white font-semibold py-2 px-4 rounded-full hover:bg-[#b3974e] mt-6 mx-auto block"
+            >
+              Enregistrer les simulations
+            </button>
           </>
         )}
       </div>
